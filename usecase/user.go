@@ -49,6 +49,11 @@ func (u *userUsecase) CreateUser(input *CreateUserInput) error {
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
+
+	if err := user.Validate(); err != nil {
+		return err
+	}
+
 	if err := u.userRepository.Create(user); err != nil {
 		return err
 	}
@@ -64,6 +69,10 @@ func (u *userUsecase) UpdateUser(input *UpdateUserInput) error {
 
 	user.Name = input.Name
 	user.UpdatedAt = time.Now()
+
+	if err := user.Validate(); err != nil {
+		return err
+	}
 
 	if err := u.userRepository.Update(user); err != nil {
 		return err
